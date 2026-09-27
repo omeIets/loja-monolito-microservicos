@@ -1,0 +1,22 @@
+{
+  "pedidos": [
+    {
+      "numero": 1,
+      "produto": "Teclado mecânico",
+      "valor": 225.0,
+      "status": "pendente"
+    },
+    {
+      "numero": 2,
+      "produto": "Teclado mecânico",
+      "valor": 225.0,
+      "status": "pendente"
+    },
+    {
+      "numero": 3,
+      "produto": "Mouse sem fio",
+      "valor": 81.0,
+      "status": "confirmado"
+    }
+  ]
+}

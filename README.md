@@ -46,11 +46,11 @@ O time de vendas quer 10% de desconto. Vocês vão "publicar" essa mudança nas 
 
 ||**Monolito**|**Microsserviços**|
 |---|---|---|
-|Quanto tempo ficou fora do ar?|||
-|O que parou de funcionar?|||
-|O que continuou funcionando?|||
+|Quanto tempo ficou fora do ar?|10s|4s|
+|O que parou de funcionar?|toda a aplicação|apenas o serviço específico|
+|O que continuou funcionando?|-|os outros serviços fora o do catálogo|
 
-**Responda** Poder ou problema dos microsserviços? Por quê? 
+**Responda** Poder ou problema dos microsserviços? Por quê? Pois ao mesmo tempo que é bom para o usuário pois o site iria continuar funcionando normalmente, podem ocorrer situações em que o usuário realizaria a compra enquanto o serviço de estoque está fora do ar e só após finalizar descobrir que na verdade não havia estoque daquele produto.
 
 ### **Experimento 2 · Latência** 
 
@@ -62,10 +62,10 @@ O time de vendas quer 10% de desconto. Vocês vão "publicar" essa mudança nas 
 
 ||**Monolito**|**Microsserviços**|
 |---|---|---|
-|Tempo médio por página (comparar.py)|||
-|tempo_interno_ms|||
+|Tempo médio por página (comparar.py)|7.12ms|29.83ms|
+|tempo_interno_ms|0.025|21.029|
 
-**Responda** Aqui tudo roda no mesmo computador. O que aconteceria com essa diferença se cada serviço estivesse numa máquina diferente? 
+**Responda** Aqui tudo roda no mesmo computador. O que aconteceria com essa diferença se cada serviço estivesse numa máquina diferente? A diferença de tempo de resposta seria consideravelmente maior e a depender poderia ser sentida pelo usuário.
 
 ### - **Experimento 3 · Consistência** 
 
@@ -77,15 +77,15 @@ Na demonstração, o professor derrubou o Estoque e a loja em microsserviços **
 
 |**/relatorio (microsserviços)**|**Antes**|**Depois**|
 |---|---|---|
-|pedidos_confirmados|||
-|pedidos_pendentes|||
-|baixas_de_estoque|||
-|consistente|||
+|pedidos_confirmados|0|0|
+|pedidos_pendentes|0|2|
+|baixas_de_estoque|0|0|
+|consistente|true|false|
 
 
 **Faça** Abra a pasta dados/. Compare pedidos.json e estoque.json: cada banco conta uma história diferente. 
 
-**Responda** No monolito, o bug do Estoque derrubou a loja inteira: nenhuma venda, mas nenhum dado errado. Nos microsserviços, a loja vendeu, mas os bancos discordam. **Qual dos dois a loja prefere? Quem decide isso?** 
+**Responda** No monolito, o bug do Estoque derrubou a loja inteira: nenhuma venda, mas nenhum dado errado. Nos microsserviços, a loja vendeu, mas os bancos discordam. **Qual dos dois a loja prefere? Quem decide isso?**  Depende da estratégia da loja e não é responsabilidade dos desenvolvedores decidir isso, a loja deve considerar decidir entre deixar o site totalmente indisponível por tempo indeterminado e n~çao realizar vendas ou deixar ele disponível e funcionando mesmo com algum problema e garantir vendas e lidar com os problemas de insconsistência que aparecerem depois.
 
 ### **Experimento 4 · Operação** 
 
@@ -97,27 +97,27 @@ Na demonstração, o professor derrubou o Estoque e a loja em microsserviços **
 
 
 |Quantos processos estão rodando?|
-|---|
-|Quantas portas?|
-|Quantos arquivos de banco?|
-|Quantas linhas de log apareceram?|
-|Em quantos serviços?|
+|1 e 2|
+|Quantas portas? 2|
+|Quantos arquivos de banco? 3|
+|Quantas linhas de log apareceram? 1 e 2|
+|Em quantos serviços? 1 e 2|
 
 
-**Responda** Se a compra desse errado, onde vocês procurariam o erro em cada versão? 
+**Responda** Se a compra desse errado, onde vocês procurariam o erro em cada versão? No monolito teria de analisar todo o código já no de microsserviços poderíamos ir direto para o código do serviço que caiu.
 
 ## **Placar da dupla** 
 
 |**Experimento**|**Quem saiu melhor?**|**Para microsserviços, é poder ou**<br>**problema?**|
 |---|---|---|
-|Bug fatal (demonstração)|||
-|1 · Deploy|||
-|2 · Latência|||
-|3 · Consistência|||
-|4 · Operação|||
+|Bug fatal (demonstração)|microsserviços|ambos|
+|1 · Deploy|microsserviços|poder|
+|2 · Latência|monolito|problema|
+|3 · Consistência|monolito|problema|
+|4 · Operação|microsserviços|poder|
 
 
-**Para fechar** Uma loja com **3 desenvolvedores** deveria usar qual das duas versões? E uma com **300** ? Usem o placar como argumento. 
+**Para fechar** Uma loja com **3 desenvolvedores** deveria usar qual das duas versões? E uma com **300** ? Usem o placar como argumento. Para uma loja com 3 desenvolvedores uma arquitetura monolito garante a simplicidade de operação, visto que eles estarão trabalhando mais em conjunto devido ao número reduzido eles precisam de agilidade e não é ideal ter de lidar com questões de latência e consistência. Já a empresa com um número grande de devs o ideal é a arquitetura de microsserviços pensando no ideal para escalar, pensando também na importância de elementos como o deploy independente e isolamento de bug fatal por exemplo, questões essenciais quando se trabalha em grandes times independentes.
 
 Para recomeçar do zero: desliguem tudo (Ctrl+C nos terminais) e rodem `python resetar.py`. 
 

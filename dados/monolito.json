@@ -1,0 +1,16 @@
+{
+  "estoque": {
+    "1": 5,
+    "2": 4,
+    "3": 5
+  },
+  "baixas": 1,
+  "pedidos": [
+    {
+      "numero": 1,
+      "produto": "Mouse sem fio",
+      "valor": 81.0,
+      "status": "confirmado"
+    }
+  ]
+}
